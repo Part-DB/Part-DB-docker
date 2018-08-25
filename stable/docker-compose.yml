@@ -1,0 +1,26 @@
+version: '3'
+services:
+  partdb:
+    image: jbtronics/part-db:stable
+    ports:
+        #Replace 8888 with the port, under which Part-DB should appear
+      - "8888:80"
+    depends_on:
+      - database
+    volumes:
+      - partdb-data:/var/www/html/data
+    restart: always
+
+  database:
+    image: mariadb:latest
+    volumes:
+      - partdb-database:/var/lib/mysql
+    environment:
+      # Set MYSQL_ROOT_PASSWORD to a unique password!!
+      MYSQL_ROOT_PASSWORD: changeme
+      MYSQL_DATABASE: partdb
+    restart: always
+
+volumes:
+  partdb-database:
+  partdb-data:
